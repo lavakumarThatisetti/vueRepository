@@ -23,25 +23,29 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      axios.delete(`http://localhost:8000/api/todos${id}`)
       .then(this.todos=this.todos.filter(todo=>todo.id!==id))
       .catch(err=>console.log(err));
     },
     addTodo(newTodo){
-      const {title,completed}=newTodo;
-      axios.post('https://jsonplaceholder.typicode.com/todos',{
+      const {title,text,completed}=newTodo;
+      console.log("Comppetes",completed);
+      axios.post('http://localhost:8000/api/todos',{
         title,
+        text,
         completed
       })
       .then(res=>this.todos=[...this.todos,res.data])
       .catch(err=>console.log(err));
     }
   },
-  created(){
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
-    .then(res=>this.todos=res.data)
+  created(){  //It will load First and get all the data 
+    axios.get('http://localhost:8000/api/todos')
+    .then(res=>{
+      this.todos=res.data;
+      console.log(res.data[0].completed);
+      })
     .catch(err=>console.log(err));
- 
  }
 }
 </script>
